@@ -32,22 +32,14 @@ public class TripBookingService {
     @Autowired
     DriverRepository driverRepository;
 
-    public TripBooking bookTrip(Integer customerId, String fromLocation, String toLocation, Integer distanceInKm)
-            throws Exception {
-
-        Customer customer = customerRepository.findById(customerId).get();
+    public TripBooking bookTrip(Integer customerId, String fromLocation, String toLocation, Integer distanceInKm) {
 
         TripBooking tripBooking = new TripBooking();
-        tripBooking.setCustomer(customer);
-        tripBooking.setDistanceInKm(distanceInKm);
-        tripBooking.setFromLocation(fromLocation);
-        tripBooking.setToLocation(toLocation);
-        tripBooking.setStatus(TripStatus.CONFIRMED);
-
         Driver driver = null;
         Cab cab = null;
         int bill = 0;
 
+        // check whether cab is available or not
         List<Cab> cabs = cabRepository.findAll();
         ListIterator<Cab> itr = cabs.listIterator();
         while (itr.hasNext()) {
@@ -60,13 +52,21 @@ public class TripBookingService {
         }
 
         if (cab == null) {
-            throw new Exception("No cab available!");
+            return null;
         } else {
             tripBooking.setDriver(driver);
 
             bill = distanceInKm * (cab.getPerKmRate());
             tripBooking.setBill(bill);
         }
+
+        Customer customer = customerRepository.findById(customerId).get();
+
+        tripBooking.setCustomer(customer);
+        tripBooking.setDistanceInKm(distanceInKm);
+        tripBooking.setFromLocation(fromLocation);
+        tripBooking.setToLocation(toLocation);
+        tripBooking.setStatus(TripStatus.CONFIRMED);
 
         // Saving in repository
         tripBookingRepository.save(tripBooking);
@@ -78,6 +78,10 @@ public class TripBookingService {
 
         // for tripBooking Repository
         TripBooking tripBooking = tripBookingRepository.findById(tripId).get();
+        if (tripBooking == null) {
+            return;
+        }
+
         tripBooking.setStatus(TripStatus.COMPLETED);
 
         // for Driver Repository
@@ -109,6 +113,9 @@ public class TripBookingService {
     public void cancelTrip(Integer tripId) {
         TripBooking tripBooking = tripBookingRepository.findById(tripId).get();
 
+        if (tripBooking == null) {
+            return;
+        }
         // for cab Repository
         Driver driver = tripBooking.getDriver();
         Cab cab = driver.getCab();
