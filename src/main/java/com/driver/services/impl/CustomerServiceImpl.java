@@ -2,6 +2,8 @@ package com.driver.services.impl;
 
 import com.driver.model.TripBooking;
 import com.driver.services.CustomerService;
+import com.driver.services.TripBookingService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.driver.model.Customer;
@@ -21,6 +23,9 @@ public class CustomerServiceImpl implements CustomerService {
 	@Autowired
 	TripBookingRepository tripBookingRepository2;
 
+	@Autowired
+	TripBookingService tripBookingService;
+
 	@Override
 	public void register(Customer customer) {
 		// Save the customer in database
@@ -32,7 +37,10 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public void deleteCustomer(Integer customerId) {
 		// Delete customer without using deleteById function
-		customerRepository2.deleteById(customerId);
+		Customer customer = customerRepository2.findById(customerId).get();
+		if (customer != null) {
+			customerRepository2.deleteById(customerId);
+		}
 	}
 
 	@Override
@@ -41,21 +49,22 @@ public class CustomerServiceImpl implements CustomerService {
 		// Book the driver with lowest driverId who is free (cab available variable is
 		// Boolean.TRUE). If no driver is available, throw "No cab available!" exception
 		// Avoid using SQL query
-
-		return null;
+		TripBooking tripBooking = tripBookingService.bookTrip(customerId, fromLocation, toLocation, distanceInKm);
+		return tripBooking;
 	}
 
 	@Override
 	public void cancelTrip(Integer tripId) {
 		// Cancel the trip having given trip Id and update TripBooking attributes
 		// accordingly
-
+		tripBookingService.cancelTrip(tripId);
 	}
 
 	@Override
 	public void completeTrip(Integer tripId) {
 		// Complete the trip having given trip Id and update TripBooking attributes
 		// accordingly
+		tripBookingService.completeTrip(tripId);
 
 	}
 }

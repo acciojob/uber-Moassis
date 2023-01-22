@@ -32,7 +32,8 @@ public class TripBookingService {
     @Autowired
     DriverRepository driverRepository;
 
-    public TripBooking bookTrip(Integer customerId, String fromLocation, String toLocation, Integer distanceInKm) {
+    public TripBooking bookTrip(Integer customerId, String fromLocation, String toLocation, Integer distanceInKm)
+            throws Exception {
 
         Customer customer = customerRepository.findById(customerId).get();
 
@@ -58,12 +59,14 @@ public class TripBookingService {
             }
         }
 
-        tripBooking.setDriver(driver);
+        if (cab == null) {
+            throw new Exception("No cab available!");
+        } else {
+            tripBooking.setDriver(driver);
 
-        if (cab != null) {
             bill = distanceInKm * (cab.getPerKmRate());
+            tripBooking.setBill(bill);
         }
-        tripBooking.setBill(bill);
 
         // Saving in repository
         tripBookingRepository.save(tripBooking);
