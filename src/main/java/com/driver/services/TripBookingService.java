@@ -1,22 +1,10 @@
 package com.driver.services;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-
+import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.driver.model.Cab;
-import com.driver.model.Customer;
-import com.driver.model.Driver;
-import com.driver.model.TripBooking;
-import com.driver.model.TripStatus;
-import com.driver.repository.CabRepository;
-import com.driver.repository.CustomerRepository;
-import com.driver.repository.DriverRepository;
-import com.driver.repository.TripBookingRepository;
-
+import com.driver.model.*;
+import com.driver.repository.*;
 @Service
 public class TripBookingService {
 
