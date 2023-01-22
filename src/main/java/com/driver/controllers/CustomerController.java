@@ -33,17 +33,17 @@ public class CustomerController {
 	@PostMapping("/bookTrip")
 	public ResponseEntity<Integer> bookTrip(@RequestParam Integer customerId, @RequestParam String fromLocation,
 			@RequestParam String toLocation, @RequestParam Integer distanceInKm) throws Exception {
-		TripBooking bookedTrip = tripBookingService.bookTrip(customerId, fromLocation, toLocation, distanceInKm);
+		TripBooking bookedTrip = customerServiceImpl.bookTrip(customerId, fromLocation, toLocation, distanceInKm);
 		return new ResponseEntity<>(bookedTrip.getTripBookingId(), HttpStatus.CREATED);
 	}
 
 	@DeleteMapping("/complete")
 	public void completeTrip(@RequestParam Integer tripId) {
-		tripBookingService.completeTrip(tripId);
+		customerServiceImpl.completeTrip(tripId);
 	}
 
 	@DeleteMapping("/cancelTrip")
 	public void cancelTrip(@RequestParam Integer tripId) {
-		tripBookingService.cancelTrip(tripId);
+		customerServiceImpl.cancelTrip(tripId);
 	}
 }
