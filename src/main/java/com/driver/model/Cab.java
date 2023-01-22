@@ -7,31 +7,31 @@ public class Cab {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int cabId;
+    int id;
 
     int perKmRate;
 
-    boolean availale;
+    boolean available;
 
     @OneToOne(mappedBy = "cab", cascade = CascadeType.ALL)
     Driver driver;
 
     public Cab(int cabId, int perKmRate, boolean availale, Driver driver) {
-        this.cabId = cabId;
+        this.id = cabId;
         this.perKmRate = perKmRate;
-        this.availale = availale;
+        this.available = availale;
         this.driver = driver;
     }
 
     public Cab() {
     }
 
-    public int getCabId() {
-        return cabId;
+    public int getId() {
+        return id;
     }
 
-    public void setCabId(int cabId) {
-        this.cabId = cabId;
+    public void setId(int cabId) {
+        this.id = cabId;
     }
 
     public int getPerKmRate() {
@@ -42,12 +42,12 @@ public class Cab {
         this.perKmRate = perKmRate;
     }
 
-    public boolean isAvailale() {
-        return availale;
+    public boolean isAvailable() {
+        return available;
     }
 
-    public void setAvailale(boolean availale) {
-        this.availale = availale;
+    public void setAvailable(boolean availale) {
+        this.available = availale;
     }
 
     public Driver getDriver() {

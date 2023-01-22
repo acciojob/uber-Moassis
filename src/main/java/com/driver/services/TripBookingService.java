@@ -41,7 +41,7 @@ public class TripBookingService {
         tripBooking.setDistanceInkm(distanceInKm);
         tripBooking.setFromLocation(fromLocation);
         tripBooking.setToLocation(toLocation);
-        tripBooking.setTripStatus(TripStatus.CONFIRMED);
+        tripBooking.setStatus(TripStatus.CONFIRMED);
 
         Driver driver = null;
         Cab cab = null;
@@ -51,8 +51,8 @@ public class TripBookingService {
         ListIterator<Cab> itr = cabs.listIterator();
         while (itr.hasNext()) {
             cab = itr.next();
-            if (cab.isAvailale()) {
-                cab.setAvailale(false);
+            if (cab.isAvailable()) {
+                cab.setAvailable(false);
                 driver = cab.getDriver();
                 break;
             }
@@ -75,7 +75,7 @@ public class TripBookingService {
 
         // for tripBooking Repository
         TripBooking tripBooking = tripBookingRepository.findById(tripId).get();
-        tripBooking.setTripStatus(TripStatus.COMPLETED);
+        tripBooking.setStatus(TripStatus.COMPLETED);
 
         // for Driver Repository
         Driver driver = tripBooking.getDriver();
@@ -99,7 +99,7 @@ public class TripBookingService {
 
         // for cab Repository
         Cab cab = driver.getCab();
-        cab.setAvailale(true);
+        cab.setAvailable(true);
         cabRepository.save(cab);
     }
 
@@ -109,11 +109,11 @@ public class TripBookingService {
         // for cab Repository
         Driver driver = tripBooking.getDriver();
         Cab cab = driver.getCab();
-        cab.setAvailale(true);
+        cab.setAvailable(true);
         cabRepository.save(cab);
 
         // for tripBooking Repository
-        tripBooking.setTripStatus(TripStatus.CANCELED);
+        tripBooking.setStatus(TripStatus.CANCELED);
         tripBookingRepository.save(tripBooking);
     }
 }
