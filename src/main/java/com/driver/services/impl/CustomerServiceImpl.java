@@ -39,7 +39,7 @@ public class CustomerServiceImpl implements CustomerService {
 		// Delete customer without using deleteById function
 		Customer customer = customerRepository2.findById(customerId).get();
 		if (customer != null) {
-			customerRepository2.deleteById(customerId);
+			customerRepository2.delete(customer);
 		}
 	}
 
