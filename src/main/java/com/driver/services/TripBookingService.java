@@ -38,7 +38,7 @@ public class TripBookingService {
 
         TripBooking tripBooking = new TripBooking();
         tripBooking.setCustomer(customer);
-        tripBooking.setDistanceInkm(distanceInKm);
+        tripBooking.setDistanceInKm(distanceInKm);
         tripBooking.setFromLocation(fromLocation);
         tripBooking.setToLocation(toLocation);
         tripBooking.setStatus(TripStatus.CONFIRMED);
