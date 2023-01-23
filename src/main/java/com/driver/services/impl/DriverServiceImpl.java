@@ -32,7 +32,7 @@ public class DriverServiceImpl implements DriverService {
 		cab.setDriver(driver);
 		driver.setCab(cab);
 
-		cabRepository3.save(cab);
+		// cabRepository3.save(cab);
 		driverRepository3.save(driver);
 	}
 
@@ -40,6 +40,9 @@ public class DriverServiceImpl implements DriverService {
 	public void removeDriver(int driverId) {
 		// Delete driver without using deleteById function
 		Driver driver = driverRepository3.findById(null).get();
+		if (driver == null) {
+			return;
+		}
 		driverRepository3.delete(driver);
 
 	}
