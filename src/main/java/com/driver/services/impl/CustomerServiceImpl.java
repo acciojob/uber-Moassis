@@ -68,31 +68,39 @@ public class CustomerServiceImpl implements CustomerService {
 		if (cab == null) {
 			throw new Exception("No cab available!");
 		} else {
+			// for TripBooking Repository
 			tripBooking.setDriver(driver);
 
 			bill = distanceInKm * (cab.getPerKmRate());
 			tripBooking.setBill(bill);
+
+			Customer customer = customerRepository2.findById(customerId).get();
+			tripBooking.setCustomer(customer);
+
+			tripBooking.setDistanceInKm(distanceInKm);
+			tripBooking.setFromLocation(fromLocation);
+			tripBooking.setToLocation(toLocation);
+			tripBooking.setStatus(TripStatus.CONFIRMED);
+			tripBookingRepository2.save(tripBooking);
+
+			// for Customer Repository
+			List<TripBooking> tripBookingListOfCustomer = customer.getTripBookingList();
+			if (tripBookingListOfCustomer == null) {
+				tripBookingListOfCustomer = new ArrayList<>();
+			}
+			tripBookingListOfCustomer.add(tripBooking);
+			customer.setTripBookingList(tripBookingListOfCustomer);
+			customerRepository2.save(customer);
+
+			// for Driver Repository
+			List<TripBooking> tripBookingListOfDriver = driver.getTripBookingList();
+			if (tripBookingListOfDriver == null) {
+				tripBookingListOfDriver = new ArrayList<>();
+			}
+			tripBookingListOfDriver.add(tripBooking);
+			driver.setTripBookingList(tripBookingListOfDriver);
+			driverRepository2.save(driver);
 		}
-
-		// for TripBooking Repository
-		Customer customer = customerRepository2.findById(customerId).get();
-		tripBooking.setCustomer(customer);
-		tripBooking.setDistanceInKm(distanceInKm);
-		tripBooking.setFromLocation(fromLocation);
-		tripBooking.setToLocation(toLocation);
-		tripBooking.setStatus(TripStatus.CONFIRMED);
-
-		// Saving in repository
-		tripBookingRepository2.save(tripBooking);
-
-		// for Customer Repository
-		List<TripBooking> tripBookingListOfCustomer = customer.getTripBookingList();
-		if (tripBookingListOfCustomer == null) {
-			tripBookingListOfCustomer = new ArrayList<>();
-		}
-		tripBookingListOfCustomer.add(tripBooking);
-		customer.setTripBookingList(tripBookingListOfCustomer);
-		customerRepository2.save(customer);
 
 		return tripBooking;
 	}
@@ -132,17 +140,8 @@ public class CustomerServiceImpl implements CustomerService {
 		tripBooking.setStatus(TripStatus.COMPLETED);
 		tripBookingRepository2.save(tripBooking);
 
-		// for Driver Repository
-		Driver driver = tripBooking.getDriver();
-		List<TripBooking> tripBookingListOfDriver = driver.getTripBookingList();
-		if (tripBookingListOfDriver == null) {
-			tripBookingListOfDriver = new ArrayList<>();
-		}
-		tripBookingListOfDriver.add(tripBooking);
-		driver.setTripBookingList(tripBookingListOfDriver);
-		driverRepository2.save(driver);
-
 		// for cab Repository
+		Driver driver = tripBooking.getDriver();
 		Cab cab = driver.getCab();
 		cab.setAvailable(true);
 		cabRepository.save(cab);
