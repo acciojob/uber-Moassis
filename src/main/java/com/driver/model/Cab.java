@@ -13,7 +13,8 @@ public class Cab {
 
     boolean available;
 
-    @OneToOne(mappedBy = "cab", cascade = CascadeType.ALL)
+    @OneToOne
+    @JoinColumn
     Driver driver;
 
     public Cab(int cabId, int perKmRate, boolean availale, Driver driver) {

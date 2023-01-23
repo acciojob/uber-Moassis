@@ -1,12 +1,10 @@
 package com.driver.services.impl;
 
-import com.driver.model.Cab;
-import com.driver.model.Driver;
-import com.driver.repository.CabRepository;
-import com.driver.services.DriverService;
+import com.driver.model.*;
+import com.driver.repository.*;
+import com.driver.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.driver.repository.DriverRepository;
 
 @Service
 public class DriverServiceImpl implements DriverService {
@@ -17,6 +15,9 @@ public class DriverServiceImpl implements DriverService {
 	@Autowired
 	CabRepository cabRepository3;
 
+	@Autowired
+	CabService cabService;
+
 	@Override
 	public void register(String mobile, String password) {
 		// Save a driver in the database having given details and a cab with ratePerKm
@@ -25,14 +26,10 @@ public class DriverServiceImpl implements DriverService {
 		driver.setMobile(mobile);
 		driver.setPassword(password);
 
-		Cab cab = new Cab();
-		cab.setAvailable(true);
-		cab.setPerKmRate(10);
-
-		cab.setDriver(driver);
+		Cab cab = cabService.createCab();
 		driver.setCab(cab);
+		cab.setDriver(driver);
 
-		// cabRepository3.save(cab);
 		driverRepository3.save(driver);
 	}
 

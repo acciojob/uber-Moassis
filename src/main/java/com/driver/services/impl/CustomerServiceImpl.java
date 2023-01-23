@@ -53,14 +53,14 @@ public class CustomerServiceImpl implements CustomerService {
 		Cab cab = null;
 		int bill = 0;
 
-		// check whether cab is available or not
-		List<Cab> cabs = cabRepository.findAll();
-		ListIterator<Cab> itr = cabs.listIterator();
+		// check whether driver is available or not
+		List<Driver> drivers = driverRepository2.findAll();
+		ListIterator<Driver> itr = drivers.listIterator();
 		while (itr.hasNext()) {
-			cab = itr.next();
+			driver = itr.next();
+			cab = driver.getCab();
 			if (cab.isAvailable()) {
 				cab.setAvailable(false);
-				driver = cab.getDriver();
 				break;
 			}
 		}
