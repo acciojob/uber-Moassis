@@ -42,6 +42,8 @@ public class DriverServiceImpl implements DriverService {
 		}
 		driverRepository3.delete(driver);
 
+		Cab cab = driver.getCab();
+		cabRepository3.delete(cab);
 	}
 
 	@Override
