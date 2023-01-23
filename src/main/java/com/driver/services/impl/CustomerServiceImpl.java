@@ -1,24 +1,11 @@
 package com.driver.services.impl;
 
-import com.driver.model.TripBooking;
-import com.driver.model.TripStatus;
-import com.driver.services.CustomerService;
-import com.driver.services.TripBookingService;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-
+import com.driver.model.*;
+import com.driver.services.*;
+import com.driver.repository.*;
+import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.driver.model.Cab;
-import com.driver.model.Customer;
-import com.driver.model.Driver;
-import com.driver.repository.CabRepository;
-import com.driver.repository.CustomerRepository;
-import com.driver.repository.DriverRepository;
-import com.driver.repository.TripBookingRepository;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -119,6 +106,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 		// for tripBooking Repository
 		tripBooking.setStatus(TripStatus.CANCELED);
+		tripBooking.setBill(0);
 		tripBookingRepository2.save(tripBooking);
 
 	}
@@ -133,6 +121,7 @@ public class CustomerServiceImpl implements CustomerService {
 		}
 
 		tripBooking.setStatus(TripStatus.COMPLETED);
+		tripBookingRepository2.save(tripBooking);
 
 		// for Driver Repository
 		Driver driver = tripBooking.getDriver();
