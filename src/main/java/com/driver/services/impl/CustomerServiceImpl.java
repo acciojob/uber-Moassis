@@ -74,8 +74,8 @@ public class CustomerServiceImpl implements CustomerService {
 			tripBooking.setBill(bill);
 		}
 
+		// for TripBooking Repository
 		Customer customer = customerRepository2.findById(customerId).get();
-
 		tripBooking.setCustomer(customer);
 		tripBooking.setDistanceInKm(distanceInKm);
 		tripBooking.setFromLocation(fromLocation);
@@ -84,6 +84,15 @@ public class CustomerServiceImpl implements CustomerService {
 
 		// Saving in repository
 		tripBookingRepository2.save(tripBooking);
+
+		// for Customer Repository
+		List<TripBooking> tripBookingListOfCustomer = customer.getTripBookingList();
+		if (tripBookingListOfCustomer == null) {
+			tripBookingListOfCustomer = new ArrayList<>();
+		}
+		tripBookingListOfCustomer.add(tripBooking);
+		customer.setTripBookingList(tripBookingListOfCustomer);
+		customerRepository2.save(customer);
 
 		return tripBooking;
 	}
@@ -94,10 +103,10 @@ public class CustomerServiceImpl implements CustomerService {
 		// accordingly
 		// for tripBooking Repository
 		TripBooking tripBooking = tripBookingRepository2.findById(tripId).get();
-
 		if (tripBooking == null) {
 			return;
 		}
+
 		// for cab Repository
 		Driver driver = tripBooking.getDriver();
 		Cab cab = driver.getCab();
@@ -132,16 +141,6 @@ public class CustomerServiceImpl implements CustomerService {
 		tripBookingListOfDriver.add(tripBooking);
 		driver.setTripBookingList(tripBookingListOfDriver);
 		driverRepository2.save(driver);
-
-		// for Customer Repository
-		Customer customer = tripBooking.getCustomer();
-		List<TripBooking> tripBookingListOfCustomer = customer.getTripBookingList();
-		if (tripBookingListOfCustomer == null) {
-			tripBookingListOfCustomer = new ArrayList<>();
-		}
-		tripBookingListOfCustomer.add(tripBooking);
-		customer.setTripBookingList(tripBookingListOfCustomer);
-		customerRepository2.save(customer);
 
 		// for cab Repository
 		Cab cab = driver.getCab();
