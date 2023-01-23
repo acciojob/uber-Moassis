@@ -2,7 +2,7 @@ package com.driver.controllers;
 
 import com.driver.model.Customer;
 import com.driver.model.TripBooking;
-import com.driver.services.TripBookingService;
+import com.driver.services.impl.TripBookingService;
 import com.driver.services.impl.CustomerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
